@@ -1,0 +1,132 @@
+{
+    "error_string": "Success.",
+    "layer_height": 0.20000000298023224,
+    "peak_rss_mb": 157.015625,
+    "plate_index": 0,
+    "return_code": 0,
+    "sliced_plates": [
+        {
+            "feature_type_times": {
+                "Bottom surface": 123.73779296875,
+                "Bridge": 142.6507568359375,
+                "Custom": 311.5068054199219,
+                "Flush": 375.0,
+                "Gap infill": 28.063730239868164,
+                "Inner wall": 152.67088317871094,
+                "Internal solid infill": 281.8416442871094,
+                "Outer wall": 222.59852600097656,
+                "Prime tower": 264.6548767089844,
+                "Sparse infill": 202.42840576171875,
+                "Top surface": 79.41816711425781,
+                "Travel": 299.9354248046875,
+                "Undefined": 290.36944580078125
+            },
+            "filament_change_times": 0,
+            "filaments": [
+                {
+                    "filament_id": "GFL99",
+                    "id": 1,
+                    "main_used_g": 9.08537483215332,
+                    "total_used_g": 10.347298622131348
+                },
+                {
+                    "filament_id": "GFL99",
+                    "id": 2,
+                    "main_used_g": 0.6179715394973755,
+                    "total_used_g": 0.7887356877326965
+                },
+                {
+                    "filament_id": "GFL99",
+                    "id": 3,
+                    "main_used_g": 0.840480625629425,
+                    "total_used_g": 1.0112446546554565
+                },
+                {
+                    "filament_id": "GFL99",
+                    "id": 4,
+                    "main_used_g": 0.12718844413757324,
+                    "total_used_g": 0.2979525625705719
+                }
+            ],
+            "id": 1,
+            "layer_filament_change": 0,
+            "main_predication": 1518.3814697265625,
+            "obj_cached_cnt": 0,
+            "objects": [
+                {
+                    "bbox": {
+                        "depth": 72.0,
+                        "height": 4.0,
+                        "width": 62.83000946044922,
+                        "x": 133.58499145507813,
+                        "y": 111.0,
+                        "z": 0.0
+                    },
+                    "id": 5,
+                    "name": "mascot_relief",
+                    "triangle_count": 35042
+                },
+                {
+                    "bbox": {
+                        "depth": 22.0,
+                        "height": 8.0,
+                        "width": 36.0,
+                        "x": 147.0,
+                        "y": 187.0,
+                        "z": 0.0
+                    },
+                    "id": 9,
+                    "name": "mascot_stand",
+                    "triangle_count": 60
+                }
+            ],
+            "times": {
+                "conflict_check_time": 6,
+                "detect_overhangs_time": 1,
+                "export_gcode_time": 494,
+                "flush_plan_time": 0,
+                "generate_support_material_time": 11,
+                "infill_generate_time": 35,
+                "infill_time": 90,
+                "ironing_time": 0,
+                "make_perimeters_time": 131,
+                "multifilament_segment_2d_time": 0,
+                "other_slice_time": 3,
+                "prepare_infill_time": 55,
+                "region_split_time": 9,
+                "skirt_brim_time": 4,
+                "slice_layers_time": 46,
+                "sliced_time": 763,
+                "sliced_time_with_cache": 498,
+                "support_detect_time": 0,
+                "support_interface_time": 0,
+                "support_normal_generate_time": 0,
+                "support_toolpath_time": 0,
+                "support_tree_generate_time": 0,
+                "toolpath_time": 6,
+                "wall_time": 76,
+                "wipe_tower_time": 15
+            },
+            "total_predication": 2474.977294921875,
+            "triangle_count": 35102,
+            "warning_message": ""
+        }
+    ],
+    "sparse_infill_density": 15.0,
+    "times": {
+        "export_3mf_time": 0,
+        "export_slicedata_time": 0,
+        "export_time": 0,
+        "import_time": 72,
+        "load_slicedata_time": 0,
+        "prepare_time": 81
+    },
+    "upward_compatible_machine": [
+        "Bambu Lab H2S 0.4 nozzle",
+        "Bambu Lab H2D 0.4 nozzle",
+        "Bambu Lab H2D Pro 0.4 nozzle",
+        "Bambu Lab A2L 0.4 nozzle",
+        "Bambu Lab H3C 0.4 nozzle"
+    ],
+    "wall_loops": 2
+}
