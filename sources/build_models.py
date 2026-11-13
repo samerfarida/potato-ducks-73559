@@ -151,14 +151,21 @@ def write3mf(path,assemblies,four=False):
 
 clip=Point(0,0).buffer(COIN_RADIUS,quad_segs=128)
 ring=clip.difference(Point(0,0).buffer(28.6,quad_segs=128))
-front_number=text('#73559',5.4,0,-23.15).buffer(.07)
+coin_text_size=5.4
+coin_text_weight=.07
+front_number=text('#73559',coin_text_size,0,-23.15).buffer(coin_text_weight)
+front_title=arc('POTATO DUCKS',24.2,coin_text_size).buffer(coin_text_weight)
+back_title=arc('FIRST LEGO LEAGUE',23.4,coin_text_size).buffer(coin_text_weight)
+back_team=text('TEAM',coin_text_size,0,-16.8).buffer(coin_text_weight)
+assert min(g.distance(ring) for g in (front_title,back_title,back_team))>.3
+assert back_team.distance(front_number)>.5
 assert front_number.distance(ring)>.3
 assert front_number.distance(unary_union([g for _,g in mascot()]))>.4
-front=regions([('gold',ring),('gold',arc('POTATO DUCKS',24.2,4.5)),*mascot(),('gold',front_number)],clip)
+front=regions([('gold',ring),('gold',front_title),*mascot(),('gold',front_number)],clip)
 # Reverse: a large three-toed webbed duck footprint, with no personal dedication.
 foot=poly([(-2,-9),(-5,-3),(-10,4),(-9,7),(-5,5),(-2,6),(0,11),(2,6),(5,5),(9,7),(10,4),(5,-3),(2,-9)]).buffer(.45)
 foot_details=unary_union([stroke([(0,-7),(-6.8,4.6)],.65),stroke([(0,-7),(0,7.8)],.65),stroke([(0,-7),(6.8,4.6)],.65)])
-back=regions([('gold',ring),('gold',arc('FIRST LEGO LEAGUE',23.4,4.5)),('black',foot.buffer(.65)),('orange',foot),('black',foot_details),('yellow',text('TEAM #73559',4.6,0,-18))],clip)
+back=regions([('gold',ring),('gold',back_title),('black',foot.buffer(.65)),('orange',foot),('black',foot_details),('yellow',back_team),('yellow',front_number)],clip)
 # Standalone flat-backed, thick mascot relief, 62 mm tall, plus display stand.
 raw=mascot();sil=unary_union([g for c,g in raw]).buffer(.65)
 minx,miny,maxx,maxy=sil.bounds
@@ -237,7 +244,7 @@ report['coin_alignment']={'pin_diameters_mm':[4,2.8],'pin_height_mm':pin_height,
 fig,axs=plt.subplots(1,4,figsize=(18,5),facecolor='#F4F1E9')
 for ax,reg,title in zip(axs,[front,back,masreg],['60 mm coin • front','60 mm coin • reverse','62 mm mascot relief + mounting tab']):draw(ax,reg,title)
 draw(axs[3],{'navy':standshape.difference(slot_outline.union(stand_label))},'Stand • engraved #73559')
-fig.suptitle('POTATO DUCKS  •  TEAM #73559',fontsize=19,color='#172840',weight='bold');fig.tight_layout();fig.savefig(ROOT/'docs'/'design_preview.png',dpi=180,facecolor=fig.get_facecolor());plt.close(fig)
+fig.suptitle('POTATO DUCKS  •  TEAM #73559',fontsize=19,color='#172840',weight='bold');fig.tight_layout(rect=(0,0,1,.90));fig.savefig(ROOT/'docs'/'design_preview.png',dpi=180,facecolor=fig.get_facecolor());plt.close(fig)
 # Editable vector design accompanies parametric source.
 fig,axs=plt.subplots(1,2,figsize=(10,5))
 for ax,reg,title in zip(axs,[front,back],['Front','Reverse']):draw(ax,reg,title)

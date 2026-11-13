@@ -8,8 +8,8 @@
       "part": "coin_front_navy",
       "watertight": true,
       "winding_consistent": true,
-      "volume_mm3": 5863.984,
-      "triangles": 8856,
+      "volume_mm3": 5831.272,
+      "triangles": 9380,
       "bounds_mm": [
         [
           -30.0,
@@ -27,8 +27,8 @@
       "part": "coin_front_gold",
       "watertight": true,
       "winding_consistent": true,
-      "volume_mm3": 302.936,
-      "triangles": 4792,
+      "volume_mm3": 335.649,
+      "triangles": 5316,
       "bounds_mm": [
         [
           -30.0,
@@ -122,8 +122,8 @@
       "part": "coin_back_navy",
       "watertight": true,
       "winding_consistent": true,
-      "volume_mm3": 6233.322,
-      "triangles": 7198,
+      "volume_mm3": 6164.117,
+      "triangles": 8910,
       "bounds_mm": [
         [
           -30.0,
@@ -141,8 +141,8 @@
       "part": "coin_back_gold",
       "watertight": true,
       "winding_consistent": true,
-      "volume_mm3": 267.758,
-      "triangles": 3192,
+      "volume_mm3": 310.187,
+      "triangles": 4136,
       "bounds_mm": [
         [
           -30.0,
@@ -160,17 +160,17 @@
       "part": "coin_back_yellow",
       "watertight": true,
       "winding_consistent": true,
-      "volume_mm3": 43.616,
-      "triangles": 996,
+      "volume_mm3": 71.235,
+      "triangles": 1768,
       "bounds_mm": [
         [
-          -17.78,
-          -19.74,
+          -11.37,
+          -25.262,
           1.6
         ],
         [
-          17.78,
-          -16.26,
+          11.37,
+          -14.762,
           2.4
         ]
       ]
@@ -356,7 +356,7 @@
     "fused_watertight": true,
     "max_color_overlap_area_mm2": 0.0005040267767369101,
     "uncovered_area_mm2": 0.0,
-    "volume_error_mm3": 0.16938176418534567,
+    "volume_error_mm3": 0.16938738781300344,
     "connected_components": 1,
     "dimensions_mm": [
       60.0,
@@ -368,7 +368,7 @@
     "fused_watertight": true,
     "max_color_overlap_area_mm2": 0.0,
     "uncovered_area_mm2": 0.0,
-    "volume_error_mm3": 1.0120143486847155,
+    "volume_error_mm3": 0.1687038097425102,
     "connected_components": 1,
     "dimensions_mm": [
       60.0,

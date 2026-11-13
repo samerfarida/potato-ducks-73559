@@ -2,7 +2,7 @@
 
 ![Design preview showing the mascot on the coin front, the duck footprint on the reverse, and the standalone duck with its engraved stand](docs/design_preview.png)
 
-A 60 mm team coin and a freestanding display mascot, designed for multicolor 3D printing. The coin has a flexing Potato Duck on the front and a webbed footprint beneath **FIRST LEGO LEAGUE** on the back. The display stand is engraved with **#73559**.
+A 60 mm team coin and a freestanding display mascot, designed for multicolor 3D printing. The coin has a flexing Potato Duck on the front and a webbed footprint beneath **FIRST LEGO LEAGUE** on the back, with **TEAM** stacked above **#73559**. Both faces use the same bold lettering size. The display stand is engraved with **#73559**.
 
 ## Which file should I open?
 
