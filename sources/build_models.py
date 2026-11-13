@@ -201,40 +201,10 @@ tab=box(-5,0,5,8)
 sil=unary_union([sil,tab]);masreg=regions(raw,sil)
 raise_art=.4
 models={'coin_front':make_meshes(front,clip,raise_art=raise_art),'coin_back':make_meshes(back,clip,raise_art=raise_art),'mascot_relief':make_meshes(masreg,sil,base=3.2,face=.8)}
-# Separate dowels keep both decorated halves flat on the print bed.
-# Left-to-right flipping preserves Y; the off-center pair keys the upright orientation.
-pin_specs=[(12,2.0),(-8,2.0)]
-pin_height=1.6
-socket_depth=1.0
-radial_clearance=.22
-socket_outline=unary_union([ellipse(0,y,r+radial_clearance,r+radial_clearance) for y,r in pin_specs])
-def circle_at(y,r):return ellipse(0,y,r,r)
-socket_tools=[]
-for y,r in pin_specs:
-    bore=extrude(circle_at(y,r+radial_clearance),-.2,socket_depth+.2)
-    entry=loft([(circle_at(y,r+radial_clearance+.25),-.2),
-                (circle_at(y,r+radial_clearance+.25),0),
-                (circle_at(y,r+radial_clearance),.35)])
-    socket_tools.append(trimesh.boolean.union([bore,entry],engine='manifold'))
-socket_tool=trimesh.util.concatenate(socket_tools)
-socket_volume=sum(m.volume for m in socket_tools)-sum(circle_at(y,r+radial_clearance+.25).area*.2 for y,r in pin_specs)
-assert pin_height<2*socket_depth<2*BASE
-assert abs(sum(y for y,_ in pin_specs))>2*radial_clearance
-for name in ('coin_front','coin_back'):
-    before=models[name]['navy']
-    models[name]['navy']=trimesh.boolean.difference([before,socket_tool],engine='manifold')
-    print(name,'socket removed volume',before.volume-models[name]['navy'].volume,'expected',socket_volume)
-pin_growth=.12  # 4.24 mm diameter; leave the tested sockets alone.
-pins=trimesh.util.concatenate([loft([(circle_at(y,r+pin_growth-.22),0),(circle_at(y,r+pin_growth),.28),
-    (circle_at(y,r+pin_growth),pin_height-.28),(circle_at(y,r+pin_growth-.22),pin_height)]) for y,r in pin_specs])
-assert pins.is_watertight and pins.is_winding_consistent and len(pins.split())==2
-(ROOT/'models'/'stl'/'coin_alignment').mkdir(parents=True,exist_ok=True)
-pins.export(ROOT/'models'/'stl'/'coin_alignment'/'coin_alignment_pins.stl')
 # Each coin half doubles as a fridge magnet.
 magnet_depth=2.05
 magnet_profile=ellipse(0,0,3.15,3.15)
 magnet_tool=extrude(magnet_profile,-.2,magnet_depth+.2)
-assert magnet_profile.distance(socket_outline)>2
 assert BASE-magnet_depth>=.7
 for name in ('coin_front','coin_back'):
     models[name]['navy']=trimesh.boolean.difference([models[name]['navy'],magnet_tool],engine='manifold')
@@ -249,7 +219,7 @@ stand_label=text('#73559',5.4,0,-6.5)
 assert standshape.buffer(-1).covers(stand_label) and not box(-5.60,-2.60,5.60,2.60).intersects(stand_label)
 stand=trimesh.boolean.difference([stand,slot,slot_entry,extrude(stand_label,7.2,1.6)],engine='manifold')
 models['mascot_stand']={'navy':stand,'yellow':extrude(stand_label,7.2,.8)}
-report={'units':'mm','coin_diameter':60,'coin_body_thickness_mm':BASE+FACE,'artwork_raise_mm':raise_art,'coin_half_thickness':BASE+FACE+raise_art,'assembled_coin_thickness':2*(BASE+FACE+raise_art),'checks':[],'notes':['Not physically test printed.','Mascot is a thick flat-backed relief with a separate stand, not a fully sculpted figurine.','Coin halves use two identical, off-center dowels and glue back-to-back.']}
+report={'units':'mm','coin_diameter':60,'coin_body_thickness_mm':BASE+FACE,'artwork_raise_mm':raise_art,'coin_half_thickness':BASE+FACE+raise_art,'assembled_coin_thickness':2*(BASE+FACE+raise_art),'checks':[],'notes':['Not physically test printed.','Mascot is a thick flat-backed relief with a separate stand, not a fully sculpted figurine.','Coin halves snap together magnetically or display separately.']}
 for name,meshes in models.items():
     folder=ROOT/'models'/'stl'/name;folder.mkdir(parents=True,exist_ok=True)
     for color,m in meshes.items():
@@ -267,15 +237,12 @@ for name,meshes in models.items():
         uncovered=outline.difference(unary_union(list(reg.values()))).area
         assert overlap<.005 and uncovered<.001,(name,overlap,uncovered)
         expected=outline.area*(bh+fh)
-        if name.startswith('coin_'): expected+=raise_art*sum(g.area for c,g in reg.items() if c!='navy')-socket_volume
-        if name.startswith('coin_'): expected-=magnet_profile.area*magnet_depth
+        if name.startswith('coin_'): expected+=raise_art*sum(g.area for c,g in reg.items() if c!='navy')-magnet_profile.area*magnet_depth
         error=abs(sum(m.volume for m in meshes.values())-expected)
         assert error<(1.1 if name.startswith('coin_') else .5),(name,error)
         # Constant-height relief has exactly the outline extrusion as its fused solid.
         # Construct it directly: boolean union of coplanar color walls is numerically unstable.
         union=extrude(outline,0,bh+fh)
-        if name.startswith('coin_'):
-            union=trimesh.boolean.difference([union,socket_tool],engine='manifold')
         if name.startswith('coin_'): union=trimesh.boolean.difference([union,magnet_tool],engine='manifold')
         report[name]={'fused_watertight':bool(union.is_watertight),'max_color_overlap_area_mm2':overlap,'uncovered_area_mm2':uncovered,'volume_error_mm3':error,'connected_components':len(union.split()),'dimensions_mm':union.extents.round(3).tolist()}
     else:
@@ -288,8 +255,6 @@ for name,meshes in models.items():
     write3mf(ROOT/'models'/'3mf'/(name+'_4color.3mf'),[(name,meshes,(65,65,0))],four=True)
 write3mf(ROOT/'models'/'3mf'/'coin_pair_4color_AMS.3mf',[('coin_front',models['coin_front'],(40,40,0)),('coin_back',models['coin_back'],(106,40,0))],four=True)
 write3mf(ROOT/'models'/'3mf'/'mascot_and_stand_4color.3mf',[('mascot_relief',models['mascot_relief'],(60,25,0)),('mascot_stand',models['mascot_stand'],(60,112,0))],four=True)
-write3mf(ROOT/'models/3mf'/'coin_alignment_pins.3mf',[('coin_alignment_pins',{'navy':pins},(65,65,0))],four=True)
-report['coin_alignment']={'pin_diameters_mm':[4.24,4.24],'socket_diameter_mm':4.44,'pin_radial_clearance_mm':.10,'socket_centers_y_mm':[12,-8],'pin_height_mm':pin_height,'socket_depth_mm':socket_depth,'radial_clearance_mm':radial_clearance,'socket_entry_chamfer_mm':.25,'pin_tip_chamfer_mm':.22,'pins_watertight':bool(pins.is_watertight)}
 report['fridge_magnet']={'nominal_magnet_mm':[6,2],'pocket_diameter_mm':6.3,'pocket_depth_mm':magnet_depth,'body_thickness_mm':BASE+FACE}
 (ROOT/'validation'/'geometry_validation.json').write_text(json.dumps(report,indent=2))
 fig,axs=plt.subplots(1,4,figsize=(18,5),facecolor='#F4F1E9')

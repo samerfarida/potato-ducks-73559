@@ -10,8 +10,8 @@
       "part": "coin_front_navy",
       "watertight": true,
       "winding_consistent": true,
-      "volume_mm3": 9151.711,
-      "triangles": 10916,
+      "volume_mm3": 9183.938,
+      "triangles": 8612,
       "bounds_mm": [
         [
           -30.0,
@@ -124,8 +124,8 @@
       "part": "coin_back_navy",
       "watertight": true,
       "winding_consistent": true,
-      "volume_mm3": 9484.556,
-      "triangles": 10446,
+      "volume_mm3": 9516.783,
+      "triangles": 8142,
       "bounds_mm": [
         [
           -30.0,
@@ -371,13 +371,13 @@
   "notes": [
     "Not physically test printed.",
     "Mascot is a thick flat-backed relief with a separate stand, not a fully sculpted figurine.",
-    "Coin halves use two identical, off-center dowels and glue back-to-back."
+    "Coin halves snap together magnetically or display separately."
   ],
   "coin_front": {
     "fused_watertight": true,
     "max_color_overlap_area_mm2": 0.0005040267767369101,
     "uncovered_area_mm2": 0.0,
-    "volume_error_mm3": 0.1697585134588735,
+    "volume_error_mm3": 0.1697586274585774,
     "connected_components": 1,
     "dimensions_mm": [
       60.0,
@@ -389,7 +389,7 @@
     "fused_watertight": true,
     "max_color_overlap_area_mm2": 0.0,
     "uncovered_area_mm2": 0.0,
-    "volume_error_mm3": 0.169143266746687,
+    "volume_error_mm3": 0.1691433807463909,
     "connected_components": 1,
     "dimensions_mm": [
       60.0,
@@ -417,24 +417,6 @@
       22.0,
       8.0
     ]
-  },
-  "coin_alignment": {
-    "pin_diameters_mm": [
-      4.24,
-      4.24
-    ],
-    "socket_diameter_mm": 4.44,
-    "pin_radial_clearance_mm": 0.1,
-    "socket_centers_y_mm": [
-      12,
-      -8
-    ],
-    "pin_height_mm": 1.6,
-    "socket_depth_mm": 1.0,
-    "radial_clearance_mm": 0.22,
-    "socket_entry_chamfer_mm": 0.25,
-    "pin_tip_chamfer_mm": 0.22,
-    "pins_watertight": true
   },
   "fridge_magnet": {
     "nominal_magnet_mm": [
