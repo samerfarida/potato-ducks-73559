@@ -69,7 +69,7 @@ def mascot():
     # Angular, determined eyes and brows, inspired by shirt.
     paint(poly([(-5,10),(-1.9,8.8),(-2.3,6.2),(-4.8,6.9)]),'gold')
     paint(poly([(1.1,8.8),(4.8,10.4),(4.3,7),(1.6,6.1)]),'gold')
-    layers.append(('black',ellipse(-2.8,7.7,.7,1.3)))
+    layers.append(('black',ellipse(-3.5,8.05,.65,.95)))
     layers.append(('black',ellipse(2.7,8,.8,1.4)))
     layers.append(('black',stroke([(-5.3,10.8),(-2.1,9.2)],.95)))
     layers.append(('black',stroke([(1,9.3),(4.9,11)],.95)))
