@@ -1,8 +1,10 @@
 {
   "units": "mm",
   "coin_diameter": 60,
-  "coin_half_thickness": 3.5999999999999996,
-  "assembled_coin_thickness": 7.199999999999999,
+  "coin_body_thickness_mm": 3.5999999999999996,
+  "artwork_raise_mm": 0.4,
+  "coin_half_thickness": 3.9999999999999996,
+  "assembled_coin_thickness": 7.999999999999999,
   "checks": [
     {
       "part": "coin_front_navy",
@@ -27,7 +29,7 @@
       "part": "coin_front_gold",
       "watertight": true,
       "winding_consistent": true,
-      "volume_mm3": 335.649,
+      "volume_mm3": 503.473,
       "triangles": 5316,
       "bounds_mm": [
         [
@@ -38,7 +40,7 @@
         [
           30.0,
           30.0,
-          3.6
+          4.0
         ]
       ]
     },
@@ -46,7 +48,7 @@
       "part": "coin_front_brown",
       "watertight": true,
       "winding_consistent": true,
-      "volume_mm3": 179.697,
+      "volume_mm3": 269.545,
       "triangles": 1304,
       "bounds_mm": [
         [
@@ -57,7 +59,7 @@
         [
           8.4,
           2.441,
-          3.6
+          4.0
         ]
       ]
     },
@@ -65,7 +67,7 @@
       "part": "coin_front_yellow",
       "watertight": true,
       "winding_consistent": true,
-      "volume_mm3": 236.867,
+      "volume_mm3": 355.3,
       "triangles": 2748,
       "bounds_mm": [
         [
@@ -76,7 +78,7 @@
         [
           17.648,
           15.5,
-          3.6
+          4.0
         ]
       ]
     },
@@ -84,7 +86,7 @@
       "part": "coin_front_orange",
       "watertight": true,
       "winding_consistent": true,
-      "volume_mm3": 38.503,
+      "volume_mm3": 57.755,
       "triangles": 452,
       "bounds_mm": [
         [
@@ -95,7 +97,7 @@
         [
           8.0,
           6.062,
-          3.6
+          4.0
         ]
       ]
     },
@@ -103,7 +105,7 @@
       "part": "coin_front_black",
       "watertight": true,
       "winding_consistent": true,
-      "volume_mm3": 139.789,
+      "volume_mm3": 209.684,
       "triangles": 6804,
       "bounds_mm": [
         [
@@ -114,7 +116,7 @@
         [
           18.166,
           16.016,
-          3.6
+          4.0
         ]
       ]
     },
@@ -141,7 +143,7 @@
       "part": "coin_back_gold",
       "watertight": true,
       "winding_consistent": true,
-      "volume_mm3": 310.187,
+      "volume_mm3": 465.281,
       "triangles": 4136,
       "bounds_mm": [
         [
@@ -152,7 +154,7 @@
         [
           30.0,
           30.0,
-          3.6
+          4.0
         ]
       ]
     },
@@ -160,7 +162,7 @@
       "part": "coin_back_yellow",
       "watertight": true,
       "winding_consistent": true,
-      "volume_mm3": 71.235,
+      "volume_mm3": 106.853,
       "triangles": 1768,
       "bounds_mm": [
         [
@@ -171,7 +173,7 @@
         [
           11.37,
           -14.762,
-          3.6
+          4.0
         ]
       ]
     },
@@ -179,7 +181,7 @@
       "part": "coin_back_orange",
       "watertight": true,
       "winding_consistent": true,
-      "volume_mm3": 157.469,
+      "volume_mm3": 236.204,
       "triangles": 428,
       "bounds_mm": [
         [
@@ -190,7 +192,7 @@
         [
           10.45,
           11.448,
-          3.6
+          4.0
         ]
       ]
     },
@@ -198,7 +200,7 @@
       "part": "coin_back_black",
       "watertight": true,
       "winding_consistent": true,
-      "volume_mm3": 58.768,
+      "volume_mm3": 88.152,
       "triangles": 780,
       "bounds_mm": [
         [
@@ -209,7 +211,7 @@
         [
           11.1,
           12.099,
-          3.6
+          4.0
         ]
       ]
     },
@@ -345,6 +347,25 @@
           8.0
         ]
       ]
+    },
+    {
+      "part": "mascot_stand_yellow",
+      "watertight": true,
+      "winding_consistent": true,
+      "volume_mm3": 33.038,
+      "triangles": 848,
+      "bounds_mm": [
+        [
+          -11.3,
+          -8.542,
+          7.2
+        ],
+        [
+          11.3,
+          -4.458,
+          8.0
+        ]
+      ]
     }
   ],
   "notes": [
@@ -399,9 +420,11 @@
   },
   "coin_alignment": {
     "pin_diameters_mm": [
-      4,
-      4
+      4.24,
+      4.24
     ],
+    "socket_diameter_mm": 4.44,
+    "pin_radial_clearance_mm": 0.1,
     "socket_centers_y_mm": [
       12,
       -8
