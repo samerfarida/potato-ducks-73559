@@ -158,18 +158,19 @@ back=regions([('gold',ring),('gold',arc('FIRST LEGO LEAGUE',23.4,4.5)),('black',
 raw=mascot();sil=unary_union([g for c,g in raw]).buffer(.65)
 minx,miny,maxx,maxy=sil.bounds
 factor=62/(maxy-miny)
-raw=[(c,translate(scale(g,xfact=factor,yfact=factor,origin=(0,0)),0,-miny*factor+10)) for c,g in raw]
-sil=translate(scale(sil,xfact=factor,yfact=factor,origin=(0,0)),0,-miny*factor+10)
-tab=box(-5,0,5,12)
-tab_label=text('#73559',2.1,0,8.2)
-assert tab.buffer(-.45).covers(tab_label)
-sil=unary_union([sil,tab]);masreg=regions([*raw,('yellow',tab_label)],sil)
+raw=[(c,translate(scale(g,xfact=factor,yfact=factor,origin=(0,0)),0,-miny*factor+6)) for c,g in raw]
+sil=translate(scale(sil,xfact=factor,yfact=factor,origin=(0,0)),0,-miny*factor+6)
+tab=box(-5,0,5,8)
+sil=unary_union([sil,tab]);masreg=regions(raw,sil)
 models={'coin_front':make_meshes(front,clip),'coin_back':make_meshes(back,clip),'mascot_relief':make_meshes(masreg,sil,base=3.2,face=.8)}
 # Stand slot takes the 4.0 mm tab with 0.3 mm clearance in both axes.
 standshape=box(-18,-11,18,11).buffer(3).buffer(-3)
 stand=extrude(standshape,0,8)
-slot=extrude(box(-5.15,-2.15,5.15,2.15),2,7)
-stand=trimesh.boolean.difference([stand,slot],engine='manifold')
+slot_outline=box(-5.15,-2.15,5.15,2.15)
+slot=extrude(slot_outline,2,7)
+stand_label=text('#73559',5.4,0,-6.5)
+assert standshape.buffer(-1).covers(stand_label) and not slot_outline.intersects(stand_label)
+stand=trimesh.boolean.difference([stand,slot,extrude(stand_label,7.2,1.6)],engine='manifold')
 models['mascot_stand']={'navy':stand}
 report={'units':'mm','coin_diameter':60,'coin_half_thickness':2.4,'assembled_coin_thickness':4.8,'checks':[],'notes':['Not physically test printed.','Mascot is a thick flat-backed relief with a separate stand, not a fully sculpted figurine.','Coin halves glue back-to-back; no alignment hardware.']}
 for name,meshes in models.items():
@@ -206,8 +207,9 @@ write3mf(ROOT/'coin_pair_6color.3mf',[('coin_front',models['coin_front'],(40,40,
 write3mf(ROOT/'coin_pair_4color_AMS.3mf',[('coin_front',models['coin_front'],(40,40,0)),('coin_back',models['coin_back'],(106,40,0))],four=True)
 write3mf(ROOT/'mascot_and_stand_6color.3mf',[('mascot_relief',models['mascot_relief'],(60,25,0)),('mascot_stand',models['mascot_stand'],(60,112,0))])
 (ROOT/'geometry_validation.json').write_text(json.dumps(report,indent=2))
-fig,axs=plt.subplots(1,3,figsize=(15,5),facecolor='#F4F1E9')
+fig,axs=plt.subplots(1,4,figsize=(18,5),facecolor='#F4F1E9')
 for ax,reg,title in zip(axs,[front,back,masreg],['60 mm coin • front','60 mm coin • reverse','62 mm mascot relief + mounting tab']):draw(ax,reg,title)
+draw(axs[3],{'navy':standshape.difference(slot_outline.union(stand_label))},'Stand • engraved #73559')
 fig.suptitle('POTATO DUCKS  •  TEAM #73559',fontsize=19,color='#172840',weight='bold');fig.tight_layout();fig.savefig(ROOT/'design_preview.png',dpi=180,facecolor=fig.get_facecolor());plt.close(fig)
 # Editable vector design accompanies parametric source.
 fig,axs=plt.subplots(1,2,figsize=(10,5))
