@@ -8,8 +8,8 @@
       "part": "coin_front_navy",
       "watertight": true,
       "winding_consistent": true,
-      "volume_mm3": 5883.597,
-      "triangles": 8384,
+      "volume_mm3": 5863.984,
+      "triangles": 8856,
       "bounds_mm": [
         [
           -30.0,
@@ -27,8 +27,8 @@
       "part": "coin_front_gold",
       "watertight": true,
       "winding_consistent": true,
-      "volume_mm3": 283.323,
-      "triangles": 4324,
+      "volume_mm3": 302.936,
+      "triangles": 4792,
       "bounds_mm": [
         [
           -30.0,
@@ -356,7 +356,7 @@
     "fused_watertight": true,
     "max_color_overlap_area_mm2": 0.0005040267767369101,
     "uncovered_area_mm2": 0.0,
-    "volume_error_mm3": 0.1693705348225194,
+    "volume_error_mm3": 0.16938176418534567,
     "connected_components": 1,
     "dimensions_mm": [
       60.0,

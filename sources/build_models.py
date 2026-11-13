@@ -151,7 +151,10 @@ def write3mf(path,assemblies,four=False):
 
 clip=Point(0,0).buffer(COIN_RADIUS,quad_segs=128)
 ring=clip.difference(Point(0,0).buffer(28.6,quad_segs=128))
-front=regions([('gold',ring),('gold',arc('POTATO DUCKS',24.2,4.5)),*mascot(),('gold',text('#73559',4.2,0,-24.1))],clip)
+front_number=text('#73559',5.4,0,-23.15).buffer(.07)
+assert front_number.distance(ring)>.3
+assert front_number.distance(unary_union([g for _,g in mascot()]))>.4
+front=regions([('gold',ring),('gold',arc('POTATO DUCKS',24.2,4.5)),*mascot(),('gold',front_number)],clip)
 # Reverse: a large three-toed webbed duck footprint, with no personal dedication.
 foot=poly([(-2,-9),(-5,-3),(-10,4),(-9,7),(-5,5),(-2,6),(0,11),(2,6),(5,5),(9,7),(10,4),(5,-3),(2,-9)]).buffer(.45)
 foot_details=unary_union([stroke([(0,-7),(-6.8,4.6)],.65),stroke([(0,-7),(0,7.8)],.65),stroke([(0,-7),(6.8,4.6)],.65)])

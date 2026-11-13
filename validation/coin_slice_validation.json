@@ -1,45 +1,45 @@
 {
   "error_string": "Success.",
   "layer_height": 0.20000000298023224,
-  "peak_rss_mb": 149.3125,
+  "peak_rss_mb": 153.28125,
   "plate_index": 0,
   "return_code": 0,
   "sliced_plates": [
     {
       "feature_type_times": {
         "Bottom surface": 172.05250549316406,
-        "Bridge": 244.8438720703125,
+        "Bridge": 244.79835510253906,
         "Custom": 311.7707824707031,
         "Flush": 290.0,
-        "Gap infill": 30.797191619873047,
-        "Inner wall": 89.55974578857422,
-        "Internal solid infill": 475.9207458496094,
-        "Outer wall": 257.77325439453125,
-        "Prime tower": 219.28448486328125,
-        "Sparse infill": 64.95704650878906,
-        "Top surface": 103.80220794677734,
-        "Travel": 354.2838134765625,
-        "Undefined": 344.4378356933594
+        "Gap infill": 37.626766204833984,
+        "Inner wall": 90.60664367675781,
+        "Internal solid infill": 477.30108642578125,
+        "Outer wall": 262.026611328125,
+        "Prime tower": 219.27865600585938,
+        "Sparse infill": 64.92979431152344,
+        "Top surface": 103.19407653808594,
+        "Travel": 368.8360290527344,
+        "Undefined": 358.99005126953125
       },
       "filament_change_times": 0,
       "filaments": [
         {
           "filament_id": "GFL99",
           "id": 1,
-          "main_used_g": 11.408773422241211,
-          "total_used_g": 12.337525367736816
+          "main_used_g": 11.380643844604492,
+          "total_used_g": 12.309395790100098
         },
         {
           "filament_id": "GFA00",
           "id": 2,
-          "main_used_g": 0.22167380154132843,
-          "total_used_g": 0.45432355999946594
+          "main_used_g": 0.22167371213436127,
+          "total_used_g": 0.4543234705924988
         },
         {
           "filament_id": "GFA00",
           "id": 3,
-          "main_used_g": 1.017388939857483,
-          "total_used_g": 1.17254638671875
+          "main_used_g": 1.0366734266281128,
+          "total_used_g": 1.1918308734893799
         },
         {
           "filament_id": "GFA00",
@@ -50,7 +50,7 @@
       ],
       "id": 1,
       "layer_filament_change": 0,
-      "main_predication": 1779.0546875,
+      "main_predication": 1806.45068359375,
       "obj_cached_cnt": 0,
       "objects": [
         {
@@ -64,7 +64,7 @@
           },
           "id": 5,
           "name": "coin_front",
-          "triangle_count": 24016
+          "triangle_count": 24956
         },
         {
           "bbox": {
@@ -83,32 +83,32 @@
       "times": {
         "conflict_check_time": 7,
         "detect_overhangs_time": 0,
-        "export_gcode_time": 1414,
+        "export_gcode_time": 1462,
         "flush_plan_time": 0,
         "generate_support_material_time": 6,
-        "infill_generate_time": 41,
-        "infill_time": 94,
+        "infill_generate_time": 44,
+        "infill_time": 100,
         "ironing_time": 0,
-        "make_perimeters_time": 120,
+        "make_perimeters_time": 138,
         "multifilament_segment_2d_time": 0,
         "other_slice_time": 3,
-        "prepare_infill_time": 53,
-        "region_split_time": 13,
-        "skirt_brim_time": 4,
-        "slice_layers_time": 35,
-        "sliced_time": 1674,
-        "sliced_time_with_cache": 1418,
+        "prepare_infill_time": 56,
+        "region_split_time": 16,
+        "skirt_brim_time": 3,
+        "slice_layers_time": 39,
+        "sliced_time": 1756,
+        "sliced_time_with_cache": 1465,
         "support_detect_time": 0,
         "support_interface_time": 0,
         "support_normal_generate_time": 0,
         "support_toolpath_time": 0,
         "support_tree_generate_time": 0,
-        "toolpath_time": 13,
-        "wall_time": 72,
-        "wipe_tower_time": 13
+        "toolpath_time": 19,
+        "wall_time": 83,
+        "wipe_tower_time": 15
       },
-      "total_predication": 2605.263916015625,
-      "triangle_count": 36610,
+      "total_predication": 2632.654052734375,
+      "triangle_count": 37550,
       "warning_message": ""
     }
   ],
@@ -117,9 +117,9 @@
     "export_3mf_time": 0,
     "export_slicedata_time": 0,
     "export_time": 0,
-    "import_time": 100,
+    "import_time": 107,
     "load_slicedata_time": 0,
-    "prepare_time": 107
+    "prepare_time": 115
   },
   "upward_compatible_machine": [
     "Bambu Lab H2S 0.4 nozzle",
