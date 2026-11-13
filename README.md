@@ -9,16 +9,23 @@ A 60 mm team coin and a freestanding display mascot, designed for multicolor 3D 
 | To print | Open in Bambu Studio | What's included |
 | --- | --- | --- |
 | Two-sided coin | [Coin project](print/coin/Potato_Ducks_H2C_4color_CONFIGURED.3mf) | Both halves and both alignment pins on one plate |
-| Replacement pins only | [Pin STL](models/stl/coin_alignment/coin_alignment_pins.stl) | One large pin and one small pin; import as a model |
+| Fridge magnets | [Magnet project](print/magnets/Potato_Ducks_Fridge_Magnets_H2C.3mf) | Two independent faces, each with a pocket for one 6 × 2 mm disc magnet |
+| Replacement pins only | [Pin STL](models/stl/coin_alignment/coin_alignment_pins.stl) | Two identical pins; import as a model |
 | Standalone mascot | [Mascot and stand project](print/mascot/Potato_Duck_Mascot_H2C_4color.3mf) | Flat-backed duck and separate engraved stand |
 
-Open the coin and mascot files **as projects** to keep the Bambu Lab H2C settings and color assignments. They use four PLA colors: **navy, brown, yellow, and orange**. Match the project colors to your loaded AMS spools and check the sliced preview before printing. The two small navy pieces beside the coin halves are the alignment pins. If you need replacements, import the pin STL and use your normal PLA profile.
+Open the coin, magnet, and mascot files **as projects** to keep the Bambu Lab H2C settings and color assignments. They use four PLA colors: **navy, brown, yellow, and orange**. Match the project colors to your loaded AMS spools and check the sliced preview before printing. The two small navy pieces beside the coin halves are the alignment pins. If you need replacements, import the pin STL and use your normal PLA profile.
 
 ## Print and assemble the coin
 
-1. Print both halves **artwork up**, with the socket openings against the build plate. Keep one large pin and one small pin for each coin.
-2. Dry-fit the large and small pins in their matching sockets. Bring the plain backs together and check that the edges sit flush. The two pin sizes keep the reverse from going on upside down. If a pin is snug, lightly sand it and try again.
+1. Print both halves **artwork up**, with the socket openings against the build plate. Keep two identical pins for each coin.
+2. Dry-fit the two Ø4.00 × 1.60 mm pins in the Ø4.44 mm sockets. Bring the plain backs together and check that the edges sit flush. The off-center socket pattern keys the orientation. Use both halves and pins from this revision together. If a pin is snug, lightly sand it and try again.
 3. Apply a thin layer of PLA-compatible glue to the plain mating faces, join the halves, and hold them flat while the adhesive sets. The pins stay hidden inside the finished coin, which is about **4.8 mm thick**.
+
+## Make fridge magnets
+
+Use the separate magnet project for faces you want to display on their own. Each face stays 60 mm across and is **3.60 mm thick**, with a centered **Ø6.30 × 2.05 mm** blind pocket. There are no alignment holes on these faces.
+
+Print artwork up, then dry-fit one **Ø6 × 2 mm** disc magnet per face. Check that it attracts the intended fridge surface and seats flush or just below the back. Use a small amount of adhesive suitable for both PLA and the magnet coating, then let it cure before mounting. Holding strength depends on the magnet and fridge surface; test one face before printing a batch.
 
 ## Print and assemble the mascot
 

@@ -1,56 +1,56 @@
 {
   "error_string": "Success.",
   "layer_height": 0.20000000298023224,
-  "peak_rss_mb": 161.453125,
+  "peak_rss_mb": 166.859375,
   "plate_index": 0,
   "return_code": 0,
   "sliced_plates": [
     {
       "feature_type_times": {
-        "Bottom surface": 173.35484313964844,
-        "Bridge": 244.197021484375,
+        "Bottom surface": 174.081298828125,
+        "Bridge": 244.93112182617188,
         "Custom": 311.78680419921875,
         "Flush": 375.0,
-        "Gap infill": 84.09862518310547,
-        "Inner wall": 99.54618835449219,
-        "Internal solid infill": 471.3745422363281,
-        "Outer wall": 281.73834228515625,
-        "Prime tower": 219.0487060546875,
-        "Sparse infill": 64.9091567993164,
-        "Top surface": 143.17962646484375,
-        "Travel": 419.8193054199219,
-        "Undefined": 409.97332763671875
+        "Gap infill": 78.99625396728516,
+        "Inner wall": 100.5492172241211,
+        "Internal solid infill": 472.9068298339844,
+        "Outer wall": 282.6982421875,
+        "Prime tower": 219.0426788330078,
+        "Sparse infill": 64.47474670410156,
+        "Top surface": 143.40594482421875,
+        "Travel": 425.01153564453125,
+        "Undefined": 415.1655578613281
       },
       "filament_change_times": 0,
       "filaments": [
         {
           "filament_id": "GFL99",
           "id": 1,
-          "main_used_g": 11.27294921875,
-          "total_used_g": 12.119026184082031
+          "main_used_g": 11.276719093322754,
+          "total_used_g": 12.122797012329102
         },
         {
           "filament_id": "GFL99",
           "id": 2,
-          "main_used_g": 0.21815535426139832,
-          "total_used_g": 0.3889194428920746
+          "main_used_g": 0.2181553840637207,
+          "total_used_g": 0.388919472694397
         },
         {
           "filament_id": "GFL99",
           "id": 3,
-          "main_used_g": 1.131668210029602,
-          "total_used_g": 1.3024322986602783
+          "main_used_g": 1.1316685676574707,
+          "total_used_g": 1.302432656288147
         },
         {
           "filament_id": "GFL99",
           "id": 4,
-          "main_used_g": 0.23227503895759583,
-          "total_used_g": 0.4030391275882721
+          "main_used_g": 0.232275128364563,
+          "total_used_g": 0.40303924679756165
         }
       ],
       "id": 1,
       "layer_filament_change": 0,
-      "main_predication": 1967.3388671875,
+      "main_predication": 1972.175537109375,
       "obj_cached_cnt": 0,
       "objects": [
         {
@@ -81,11 +81,11 @@
         },
         {
           "bbox": {
-            "depth": 23.399993896484375,
+            "depth": 24.0,
             "height": 1.600000023841858,
             "width": 4.0,
             "x": 242.0,
-            "y": 148.60000610351562,
+            "y": 150.0,
             "z": 0.0
           },
           "id": 13,
@@ -94,33 +94,33 @@
         }
       ],
       "times": {
-        "conflict_check_time": 13,
-        "detect_overhangs_time": 3,
-        "export_gcode_time": 2284,
+        "conflict_check_time": 9,
+        "detect_overhangs_time": 1,
+        "export_gcode_time": 3067,
         "flush_plan_time": 0,
-        "generate_support_material_time": 26,
-        "infill_generate_time": 75,
-        "infill_time": 183,
+        "generate_support_material_time": 7,
+        "infill_generate_time": 59,
+        "infill_time": 130,
         "ironing_time": 0,
-        "make_perimeters_time": 269,
+        "make_perimeters_time": 218,
         "multifilament_segment_2d_time": 0,
-        "other_slice_time": 2,
-        "prepare_infill_time": 108,
-        "region_split_time": 39,
-        "skirt_brim_time": 14,
-        "slice_layers_time": 81,
-        "sliced_time": 2854,
-        "sliced_time_with_cache": 2298,
+        "other_slice_time": 4,
+        "prepare_infill_time": 71,
+        "region_split_time": 22,
+        "skirt_brim_time": 11,
+        "slice_layers_time": 62,
+        "sliced_time": 3490,
+        "sliced_time_with_cache": 3078,
         "support_detect_time": 0,
         "support_interface_time": 0,
         "support_normal_generate_time": 0,
         "support_toolpath_time": 0,
         "support_tree_generate_time": 0,
-        "toolpath_time": 33,
-        "wall_time": 149,
-        "wipe_tower_time": 27
+        "toolpath_time": 27,
+        "wall_time": 134,
+        "wipe_tower_time": 13
       },
-      "total_predication": 2878.328369140625,
+      "total_predication": 2883.1591796875,
       "triangle_count": 46626,
       "warning_message": ""
     }
@@ -130,9 +130,9 @@
     "export_3mf_time": 0,
     "export_slicedata_time": 0,
     "export_time": 0,
-    "import_time": 145,
+    "import_time": 123,
     "load_slicedata_time": 0,
-    "prepare_time": 168
+    "prepare_time": 126
   },
   "upward_compatible_machine": [
     "Bambu Lab H2S 0.4 nozzle",

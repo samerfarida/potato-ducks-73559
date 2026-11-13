@@ -8,7 +8,7 @@
       "part": "coin_front_navy",
       "watertight": true,
       "winding_consistent": true,
-      "volume_mm3": 5830.171,
+      "volume_mm3": 5822.769,
       "triangles": 10148,
       "bounds_mm": [
         [
@@ -122,7 +122,7 @@
       "part": "coin_back_navy",
       "watertight": true,
       "winding_consistent": true,
-      "volume_mm3": 6163.016,
+      "volume_mm3": 6155.614,
       "triangles": 9678,
       "bounds_mm": [
         [
@@ -328,6 +328,215 @@
       ]
     },
     {
+      "part": "magnet_front_navy",
+      "watertight": true,
+      "winding_consistent": true,
+      "volume_mm3": 9183.938,
+      "triangles": 8612,
+      "bounds_mm": [
+        [
+          -30.0,
+          -30.0,
+          0.0
+        ],
+        [
+          30.0,
+          30.0,
+          3.6
+        ]
+      ]
+    },
+    {
+      "part": "magnet_front_gold",
+      "watertight": true,
+      "winding_consistent": true,
+      "volume_mm3": 335.649,
+      "triangles": 5316,
+      "bounds_mm": [
+        [
+          -30.0,
+          -30.0,
+          2.8
+        ],
+        [
+          30.0,
+          30.0,
+          3.6
+        ]
+      ]
+    },
+    {
+      "part": "magnet_front_brown",
+      "watertight": true,
+      "winding_consistent": true,
+      "volume_mm3": 179.697,
+      "triangles": 1304,
+      "bounds_mm": [
+        [
+          -7.796,
+          -15.695,
+          2.8
+        ],
+        [
+          8.4,
+          2.441,
+          3.6
+        ]
+      ]
+    },
+    {
+      "part": "magnet_front_yellow",
+      "watertight": true,
+      "winding_consistent": true,
+      "volume_mm3": 236.867,
+      "triangles": 2748,
+      "bounds_mm": [
+        [
+          -17.648,
+          -4.598,
+          2.8
+        ],
+        [
+          17.648,
+          15.5,
+          3.6
+        ]
+      ]
+    },
+    {
+      "part": "magnet_front_orange",
+      "watertight": true,
+      "winding_consistent": true,
+      "volume_mm3": 38.503,
+      "triangles": 452,
+      "bounds_mm": [
+        [
+          -8.0,
+          -19.3,
+          2.8
+        ],
+        [
+          8.0,
+          6.062,
+          3.6
+        ]
+      ]
+    },
+    {
+      "part": "magnet_front_black",
+      "watertight": true,
+      "winding_consistent": true,
+      "volume_mm3": 139.789,
+      "triangles": 6804,
+      "bounds_mm": [
+        [
+          -18.166,
+          -19.818,
+          2.8
+        ],
+        [
+          18.166,
+          16.016,
+          3.6
+        ]
+      ]
+    },
+    {
+      "part": "magnet_back_navy",
+      "watertight": true,
+      "winding_consistent": true,
+      "volume_mm3": 9516.783,
+      "triangles": 8142,
+      "bounds_mm": [
+        [
+          -30.0,
+          -30.0,
+          0.0
+        ],
+        [
+          30.0,
+          30.0,
+          3.6
+        ]
+      ]
+    },
+    {
+      "part": "magnet_back_gold",
+      "watertight": true,
+      "winding_consistent": true,
+      "volume_mm3": 310.187,
+      "triangles": 4136,
+      "bounds_mm": [
+        [
+          -30.0,
+          -30.0,
+          2.8
+        ],
+        [
+          30.0,
+          30.0,
+          3.6
+        ]
+      ]
+    },
+    {
+      "part": "magnet_back_yellow",
+      "watertight": true,
+      "winding_consistent": true,
+      "volume_mm3": 71.235,
+      "triangles": 1768,
+      "bounds_mm": [
+        [
+          -11.37,
+          -25.262,
+          2.8
+        ],
+        [
+          11.37,
+          -14.762,
+          3.6
+        ]
+      ]
+    },
+    {
+      "part": "magnet_back_orange",
+      "watertight": true,
+      "winding_consistent": true,
+      "volume_mm3": 157.469,
+      "triangles": 428,
+      "bounds_mm": [
+        [
+          -10.449,
+          -9.45,
+          2.8
+        ],
+        [
+          10.45,
+          11.448,
+          3.6
+        ]
+      ]
+    },
+    {
+      "part": "magnet_back_black",
+      "watertight": true,
+      "winding_consistent": true,
+      "volume_mm3": 58.768,
+      "triangles": 780,
+      "bounds_mm": [
+        [
+          -11.096,
+          -10.099,
+          2.8
+        ],
+        [
+          11.1,
+          12.099,
+          3.6
+        ]
+      ]
+    },
+    {
       "part": "mascot_stand_navy",
       "watertight": true,
       "winding_consistent": true,
@@ -350,13 +559,13 @@
   "notes": [
     "Not physically test printed.",
     "Mascot is a thick flat-backed relief with a separate stand, not a fully sculpted figurine.",
-    "Coin halves use two separate unequal dowels and glue back-to-back."
+    "Coin halves use two identical, off-center dowels and glue back-to-back."
   ],
   "coin_front": {
     "fused_watertight": true,
     "max_color_overlap_area_mm2": 0.0005040267767369101,
     "uncovered_area_mm2": 0.0,
-    "volume_error_mm3": 0.1693865121151248,
+    "volume_error_mm3": 0.16938644865786046,
     "connected_components": 1,
     "dimensions_mm": [
       60.0,
@@ -368,7 +577,7 @@
     "fused_watertight": true,
     "max_color_overlap_area_mm2": 0.0,
     "uncovered_area_mm2": 0.0,
-    "volume_error_mm3": 0.16870293404463155,
+    "volume_error_mm3": 0.16870287058645772,
     "connected_components": 1,
     "dimensions_mm": [
       60.0,
@@ -388,6 +597,30 @@
       4.0
     ]
   },
+  "magnet_front": {
+    "fused_watertight": true,
+    "max_color_overlap_area_mm2": 0.0005040267767369101,
+    "uncovered_area_mm2": 0.0,
+    "volume_error_mm3": 0.16977736100670882,
+    "connected_components": 1,
+    "dimensions_mm": [
+      60.0,
+      60.0,
+      3.6
+    ]
+  },
+  "magnet_back": {
+    "fused_watertight": true,
+    "max_color_overlap_area_mm2": 0.0,
+    "uncovered_area_mm2": 0.0,
+    "volume_error_mm3": 0.1691433807463909,
+    "connected_components": 1,
+    "dimensions_mm": [
+      60.0,
+      60.0,
+      3.6
+    ]
+  },
   "mascot_stand": {
     "fused_watertight": true,
     "connected_components": 1,
@@ -400,7 +633,11 @@
   "coin_alignment": {
     "pin_diameters_mm": [
       4,
-      2.8
+      4
+    ],
+    "socket_centers_y_mm": [
+      12,
+      -8
     ],
     "pin_height_mm": 1.6,
     "socket_depth_mm": 1.0,
@@ -408,5 +645,14 @@
     "socket_entry_chamfer_mm": 0.25,
     "pin_tip_chamfer_mm": 0.22,
     "pins_watertight": true
+  },
+  "fridge_magnet": {
+    "nominal_magnet_mm": [
+      6,
+      2
+    ],
+    "pocket_diameter_mm": 6.3,
+    "pocket_depth_mm": 2.05,
+    "body_thickness_mm": 3.5999999999999996
   }
 }
