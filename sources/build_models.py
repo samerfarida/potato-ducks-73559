@@ -94,6 +94,31 @@ def extrude(g,z,h):
         if p.geom_type!='Polygon' or p.area<0.002:continue
         m=trimesh.creation.extrude_polygon(p,h,engine='earcut');m.apply_translation([0,0,z]);parts.append(m)
     return trimesh.util.concatenate(parts)
+def loft(rings):
+    """Convex lead-in tool or pin from horizontal polygon sections."""
+    from shapely.geometry.polygon import orient
+    sections=[list(orient(outline,sign=1).exterior.coords)[:-1] for outline,_ in rings]
+    n=len(sections[0])
+    assert all(len(section)==n for section in sections)
+    # Align corresponding vertices across convex sections.
+    for i in range(1,len(sections)):
+        ref=np.array(sections[i-1][0])-np.mean(sections[i-1],axis=0)
+        centered=np.array(sections[i])-np.mean(sections[i],axis=0)
+        j=int(np.argmax(centered@ref/np.linalg.norm(centered,axis=1)))
+        sections[i]=sections[i][j:]+sections[i][:j]
+    points=[(x,y,z) for section,(_,z) in zip(sections,rings) for x,y in section]
+    faces=[]
+    for row in range(len(sections)-1):
+        for i in range(n):
+            a=row*n+i; b=row*n+(i+1)%n
+            faces.extend([(a,b,b+n),(a,b+n,a+n)])
+    top=(len(sections)-1)*n
+    faces.extend((0,i+1,i) for i in range(1,n-1))
+    faces.extend((top,top+i,top+i+1) for i in range(1,n-1))
+    mesh=trimesh.Trimesh(points,faces,process=False)
+    assert mesh.is_volume
+    return mesh
+
 def make_meshes(reg,clip,base=BASE,face=FACE):
     clip=set_precision(clip,0.001)
     meshes={c:extrude(g,base,face) for c,g in reg.items()}
@@ -182,25 +207,37 @@ pin_height=1.6
 socket_depth=1.0
 radial_clearance=.22
 socket_outline=unary_union([ellipse(0,y,r+radial_clearance,r+radial_clearance) for y,r in pin_specs])
-socket_tool=extrude(socket_outline,-.2,socket_depth+.2)
+def circle_at(y,r):return ellipse(0,y,r,r)
+socket_tools=[]
+for y,r in pin_specs:
+    bore=extrude(circle_at(y,r+radial_clearance),-.2,socket_depth+.2)
+    entry=loft([(circle_at(y,r+radial_clearance+.25),-.2),
+                (circle_at(y,r+radial_clearance+.25),0),
+                (circle_at(y,r+radial_clearance),.35)])
+    socket_tools.append(trimesh.boolean.union([bore,entry],engine='manifold'))
+socket_tool=trimesh.util.concatenate(socket_tools)
+socket_volume=sum(m.volume for m in socket_tools)-sum(circle_at(y,r+radial_clearance+.25).area*.2 for y,r in pin_specs)
 assert pin_height<2*socket_depth<2*BASE
 assert pin_specs[0][1]>pin_specs[1][1]+radial_clearance
 for name in ('coin_front','coin_back'):
     before=models[name]['navy']
     models[name]['navy']=trimesh.boolean.difference([before,socket_tool],engine='manifold')
-    print(name,'socket removed volume',before.volume-models[name]['navy'].volume,'expected',socket_outline.area*socket_depth)
-pins=extrude(unary_union([ellipse(0,y,r,r) for y,r in pin_specs]),0,pin_height)
+    print(name,'socket removed volume',before.volume-models[name]['navy'].volume,'expected',socket_volume)
+pins=trimesh.util.concatenate([loft([(circle_at(y,r-.22),0),(circle_at(y,r),.28),
+    (circle_at(y,r),pin_height-.28),(circle_at(y,r-.22),pin_height)]) for y,r in pin_specs])
 assert pins.is_watertight and pins.is_winding_consistent and len(pins.split())==2
 (ROOT/'models'/'stl'/'coin_alignment').mkdir(parents=True,exist_ok=True)
 pins.export(ROOT/'models'/'stl'/'coin_alignment'/'coin_alignment_pins.stl')
 # Stand slot takes the 4.0 mm tab with 0.3 mm clearance in both axes.
-standshape=box(-18,-11,18,11).buffer(3).buffer(-3)
+standshape=box(-15,-8,15,8).buffer(3,quad_segs=24)
 stand=extrude(standshape,0,8)
 slot_outline=box(-5.15,-2.15,5.15,2.15)
 slot=extrude(slot_outline,2,7)
+slot_entry=loft([(slot_outline,7.55),(box(-5.60,-2.60,5.60,2.60),8),
+                 (box(-5.60,-2.60,5.60,2.60),8.1)])
 stand_label=text('#73559',5.4,0,-6.5)
-assert standshape.buffer(-1).covers(stand_label) and not slot_outline.intersects(stand_label)
-stand=trimesh.boolean.difference([stand,slot,extrude(stand_label,7.2,1.6)],engine='manifold')
+assert standshape.buffer(-1).covers(stand_label) and not box(-5.60,-2.60,5.60,2.60).intersects(stand_label)
+stand=trimesh.boolean.difference([stand,slot,slot_entry,extrude(stand_label,7.2,1.6)],engine='manifold')
 models['mascot_stand']={'navy':stand}
 report={'units':'mm','coin_diameter':60,'coin_half_thickness':2.4,'assembled_coin_thickness':4.8,'checks':[],'notes':['Not physically test printed.','Mascot is a thick flat-backed relief with a separate stand, not a fully sculpted figurine.','Coin halves use two separate unequal dowels and glue back-to-back.']}
 for name,meshes in models.items():
@@ -219,7 +256,7 @@ for name,meshes in models.items():
         uncovered=outline.difference(unary_union(list(reg.values()))).area
         assert overlap<.005 and uncovered<.001,(name,overlap,uncovered)
         expected=outline.area*(bh+fh)
-        if name.startswith('coin_'): expected-=socket_outline.area*socket_depth
+        if name.startswith('coin_'): expected-=socket_volume
         error=abs(sum(m.volume for m in meshes.values())-expected)
         assert error<(1.1 if name.startswith('coin_') else .5),(name,error)
         # Constant-height relief has exactly the outline extrusion as its fused solid.
@@ -238,12 +275,12 @@ for name,meshes in models.items():
 write3mf(ROOT/'models'/'3mf'/'coin_pair_6color.3mf',[('coin_front',models['coin_front'],(40,40,0)),('coin_back',models['coin_back'],(106,40,0))])
 write3mf(ROOT/'models'/'3mf'/'coin_pair_4color_AMS.3mf',[('coin_front',models['coin_front'],(40,40,0)),('coin_back',models['coin_back'],(106,40,0))],four=True)
 write3mf(ROOT/'models'/'3mf'/'mascot_and_stand_6color.3mf',[('mascot_relief',models['mascot_relief'],(60,25,0)),('mascot_stand',models['mascot_stand'],(60,112,0))])
-write3mf(ROOT/'print/coin'/'coin_alignment_pins.3mf',[('coin_alignment_pins',{'navy':pins},(65,65,0))],four=True)
-report['coin_alignment']={'pin_diameters_mm':[4,2.8],'pin_height_mm':pin_height,'socket_depth_mm':socket_depth,'radial_clearance_mm':radial_clearance,'pins_watertight':bool(pins.is_watertight)}
+write3mf(ROOT/'models/3mf'/'coin_alignment_pins.3mf',[('coin_alignment_pins',{'navy':pins},(65,65,0))],four=True)
+report['coin_alignment']={'pin_diameters_mm':[4,2.8],'pin_height_mm':pin_height,'socket_depth_mm':socket_depth,'radial_clearance_mm':radial_clearance,'socket_entry_chamfer_mm':.25,'pin_tip_chamfer_mm':.22,'pins_watertight':bool(pins.is_watertight)}
 (ROOT/'validation'/'geometry_validation.json').write_text(json.dumps(report,indent=2))
 fig,axs=plt.subplots(1,4,figsize=(18,5),facecolor='#F4F1E9')
 for ax,reg,title in zip(axs,[front,back,masreg],['60 mm coin • front','60 mm coin • reverse','62 mm mascot relief + mounting tab']):draw(ax,reg,title)
-draw(axs[3],{'navy':standshape.difference(slot_outline.union(stand_label))},'Stand • engraved #73559')
+draw(axs[3],{'navy':standshape.difference(box(-5.60,-2.60,5.60,2.60).union(stand_label))},'Stand • engraved #73559')
 fig.suptitle('POTATO DUCKS  •  TEAM #73559',fontsize=19,color='#172840',weight='bold');fig.tight_layout(rect=(0,0,1,.90));fig.savefig(ROOT/'docs'/'design_preview.png',dpi=180,facecolor=fig.get_facecolor());plt.close(fig)
 # Editable vector design accompanies parametric source.
 fig,axs=plt.subplots(1,2,figsize=(10,5))
