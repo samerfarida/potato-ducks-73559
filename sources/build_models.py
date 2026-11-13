@@ -163,6 +163,24 @@ sil=translate(scale(sil,xfact=factor,yfact=factor,origin=(0,0)),0,-miny*factor+6
 tab=box(-5,0,5,8)
 sil=unary_union([sil,tab]);masreg=regions(raw,sil)
 models={'coin_front':make_meshes(front,clip),'coin_back':make_meshes(back,clip),'mascot_relief':make_meshes(masreg,sil,base=3.2,face=.8)}
+# Separate dowels keep both decorated halves flat on the print bed.
+# Left-to-right flipping preserves Y; unequal diameters key the upright orientation.
+pin_specs=[(10,2.0),(-10,1.4)]
+pin_height=1.6
+socket_depth=1.0
+radial_clearance=.22
+socket_outline=unary_union([ellipse(0,y,r+radial_clearance,r+radial_clearance) for y,r in pin_specs])
+socket_tool=extrude(socket_outline,-.2,socket_depth+.2)
+assert pin_height<2*socket_depth<2*BASE
+assert pin_specs[0][1]>pin_specs[1][1]+radial_clearance
+for name in ('coin_front','coin_back'):
+    before=models[name]['navy']
+    models[name]['navy']=trimesh.boolean.difference([before,socket_tool],engine='manifold')
+    print(name,'socket removed volume',before.volume-models[name]['navy'].volume,'expected',socket_outline.area*socket_depth)
+pins=extrude(unary_union([ellipse(0,y,r,r) for y,r in pin_specs]),0,pin_height)
+assert pins.is_watertight and pins.is_winding_consistent and len(pins.split())==2
+(ROOT/'STL'/'coin_alignment').mkdir(parents=True,exist_ok=True)
+pins.export(ROOT/'STL'/'coin_alignment'/'coin_alignment_pins.stl')
 # Stand slot takes the 4.0 mm tab with 0.3 mm clearance in both axes.
 standshape=box(-18,-11,18,11).buffer(3).buffer(-3)
 stand=extrude(standshape,0,8)
@@ -172,7 +190,7 @@ stand_label=text('#73559',5.4,0,-6.5)
 assert standshape.buffer(-1).covers(stand_label) and not slot_outline.intersects(stand_label)
 stand=trimesh.boolean.difference([stand,slot,extrude(stand_label,7.2,1.6)],engine='manifold')
 models['mascot_stand']={'navy':stand}
-report={'units':'mm','coin_diameter':60,'coin_half_thickness':2.4,'assembled_coin_thickness':4.8,'checks':[],'notes':['Not physically test printed.','Mascot is a thick flat-backed relief with a separate stand, not a fully sculpted figurine.','Coin halves glue back-to-back; no alignment hardware.']}
+report={'units':'mm','coin_diameter':60,'coin_half_thickness':2.4,'assembled_coin_thickness':4.8,'checks':[],'notes':['Not physically test printed.','Mascot is a thick flat-backed relief with a separate stand, not a fully sculpted figurine.','Coin halves use two separate unequal dowels and glue back-to-back.']}
 for name,meshes in models.items():
     folder=ROOT/'STL'/name;folder.mkdir(parents=True,exist_ok=True)
     for color,m in meshes.items():
@@ -189,11 +207,13 @@ for name,meshes in models.items():
         uncovered=outline.difference(unary_union(list(reg.values()))).area
         assert overlap<.005 and uncovered<.001,(name,overlap,uncovered)
         expected=outline.area*(bh+fh)
+        if name.startswith('coin_'): expected-=socket_outline.area*socket_depth
         error=abs(sum(m.volume for m in meshes.values())-expected)
-        assert error<.5,(name,error)
+        assert error<(1.1 if name.startswith('coin_') else .5),(name,error)
         # Constant-height relief has exactly the outline extrusion as its fused solid.
         # Construct it directly: boolean union of coplanar color walls is numerically unstable.
         union=extrude(outline,0,bh+fh)
+        if name.startswith('coin_'): union=trimesh.boolean.difference([union,socket_tool],engine='manifold')
         report[name]={'fused_watertight':bool(union.is_watertight),'max_color_overlap_area_mm2':overlap,'uncovered_area_mm2':uncovered,'volume_error_mm3':error,'connected_components':len(union.split()),'dimensions_mm':union.extents.round(3).tolist()}
     else:
         union=meshes['navy']
@@ -206,6 +226,8 @@ for name,meshes in models.items():
 write3mf(ROOT/'coin_pair_6color.3mf',[('coin_front',models['coin_front'],(40,40,0)),('coin_back',models['coin_back'],(106,40,0))])
 write3mf(ROOT/'coin_pair_4color_AMS.3mf',[('coin_front',models['coin_front'],(40,40,0)),('coin_back',models['coin_back'],(106,40,0))],four=True)
 write3mf(ROOT/'mascot_and_stand_6color.3mf',[('mascot_relief',models['mascot_relief'],(60,25,0)),('mascot_stand',models['mascot_stand'],(60,112,0))])
+write3mf(ROOT/'coin_alignment_pins.3mf',[('coin_alignment_pins',{'navy':pins},(65,65,0))],four=True)
+report['coin_alignment']={'pin_diameters_mm':[4,2.8],'pin_height_mm':pin_height,'socket_depth_mm':socket_depth,'radial_clearance_mm':radial_clearance,'pins_watertight':bool(pins.is_watertight)}
 (ROOT/'geometry_validation.json').write_text(json.dumps(report,indent=2))
 fig,axs=plt.subplots(1,4,figsize=(18,5),facecolor='#F4F1E9')
 for ax,reg,title in zip(axs,[front,back,masreg],['60 mm coin • front','60 mm coin • reverse','62 mm mascot relief + mounting tab']):draw(ax,reg,title)
