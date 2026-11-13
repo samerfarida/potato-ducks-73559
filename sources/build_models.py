@@ -24,7 +24,7 @@ for folder in ("models/3mf","models/stl","print/coin","docs","validation","sourc
 COLORS={'navy':'#172840','gold':'#E9AE35','brown':'#A8652D','yellow':'#FFCE21','orange':'#F47721','black':'#161719'}
 FONT=FontProperties(family='DejaVu Sans',weight='bold')
 COIN_RADIUS=30.0
-BASE=1.6
+BASE=2.8
 FACE=0.8
 
 def ellipse(x,y,rx,ry):return translate(scale(Point(0,0).buffer(1,quad_segs=48),rx,ry),x,y)
@@ -228,15 +228,14 @@ pins=trimesh.util.concatenate([loft([(circle_at(y,r-.22),0),(circle_at(y,r),.28)
 assert pins.is_watertight and pins.is_winding_consistent and len(pins.split())==2
 (ROOT/'models'/'stl'/'coin_alignment').mkdir(parents=True,exist_ok=True)
 pins.export(ROOT/'models'/'stl'/'coin_alignment'/'coin_alignment_pins.stl')
-# Fridge variants have a single blind magnet pocket, no alignment holes.
-magnet_base=2.8
+# Each coin half doubles as a fridge magnet.
 magnet_depth=2.05
 magnet_profile=ellipse(0,0,3.15,3.15)
 magnet_tool=extrude(magnet_profile,-.2,magnet_depth+.2)
-for name,reg in [('magnet_front',front),('magnet_back',back)]:
-    meshes=make_meshes(reg,clip,base=magnet_base)
-    meshes['navy']=trimesh.boolean.difference([meshes['navy'],magnet_tool],engine='manifold')
-    models[name]=meshes
+assert magnet_profile.distance(socket_outline)>2
+assert BASE-magnet_depth>=.7
+for name in ('coin_front','coin_back'):
+    models[name]['navy']=trimesh.boolean.difference([models[name]['navy'],magnet_tool],engine='manifold')
 # Stand slot takes the 4.0 mm tab with 0.3 mm clearance in both axes.
 standshape=box(-15,-8,15,8).buffer(3,quad_segs=24)
 stand=extrude(standshape,0,8)
@@ -248,7 +247,7 @@ stand_label=text('#73559',5.4,0,-6.5)
 assert standshape.buffer(-1).covers(stand_label) and not box(-5.60,-2.60,5.60,2.60).intersects(stand_label)
 stand=trimesh.boolean.difference([stand,slot,slot_entry,extrude(stand_label,7.2,1.6)],engine='manifold')
 models['mascot_stand']={'navy':stand}
-report={'units':'mm','coin_diameter':60,'coin_half_thickness':2.4,'assembled_coin_thickness':4.8,'checks':[],'notes':['Not physically test printed.','Mascot is a thick flat-backed relief with a separate stand, not a fully sculpted figurine.','Coin halves use two identical, off-center dowels and glue back-to-back.']}
+report={'units':'mm','coin_diameter':60,'coin_half_thickness':BASE+FACE,'assembled_coin_thickness':2*(BASE+FACE),'checks':[],'notes':['Not physically test printed.','Mascot is a thick flat-backed relief with a separate stand, not a fully sculpted figurine.','Coin halves use two identical, off-center dowels and glue back-to-back.']}
 for name,meshes in models.items():
     folder=ROOT/'models'/'stl'/name;folder.mkdir(parents=True,exist_ok=True)
     for color,m in meshes.items():
@@ -258,7 +257,7 @@ for name,meshes in models.items():
         assert reload.is_watertight and reload.is_winding_consistent
         report['checks'].append({'part':name+'_'+color,'watertight':bool(reload.is_watertight),'winding_consistent':bool(reload.is_winding_consistent),'volume_mm3':round(m.volume,3),'triangles':len(m.faces),'bounds_mm':m.bounds.round(3).tolist()})
     if name!='mascot_stand':
-        reg,outline,bh,fh={'coin_front':(front,clip,BASE,FACE),'coin_back':(back,clip,BASE,FACE),'mascot_relief':(masreg,sil,3.2,.8),'magnet_front':(front,clip,magnet_base,FACE),'magnet_back':(back,clip,magnet_base,FACE)}[name]
+        reg,outline,bh,fh={'coin_front':(front,clip,BASE,FACE),'coin_back':(back,clip,BASE,FACE),'mascot_relief':(masreg,sil,3.2,.8)}[name]
         outline=set_precision(outline,0.001)
         pairs=[reg[a].intersection(reg[b]).area for a in reg for b in reg if a<b]
         overlap=max(pairs,default=0)
@@ -266,14 +265,14 @@ for name,meshes in models.items():
         assert overlap<.005 and uncovered<.001,(name,overlap,uncovered)
         expected=outline.area*(bh+fh)
         if name.startswith('coin_'): expected-=socket_volume
-        if name.startswith('magnet_'): expected-=magnet_profile.area*magnet_depth
+        if name.startswith('coin_'): expected-=magnet_profile.area*magnet_depth
         error=abs(sum(m.volume for m in meshes.values())-expected)
         assert error<(1.1 if name.startswith('coin_') else .5),(name,error)
         # Constant-height relief has exactly the outline extrusion as its fused solid.
         # Construct it directly: boolean union of coplanar color walls is numerically unstable.
         union=extrude(outline,0,bh+fh)
         if name.startswith('coin_'): union=trimesh.boolean.difference([union,socket_tool],engine='manifold')
-        if name.startswith('magnet_'): union=trimesh.boolean.difference([union,magnet_tool],engine='manifold')
+        if name.startswith('coin_'): union=trimesh.boolean.difference([union,magnet_tool],engine='manifold')
         report[name]={'fused_watertight':bool(union.is_watertight),'max_color_overlap_area_mm2':overlap,'uncovered_area_mm2':uncovered,'volume_error_mm3':error,'connected_components':len(union.split()),'dimensions_mm':union.extents.round(3).tolist()}
     else:
         union=meshes['navy']
@@ -288,7 +287,7 @@ write3mf(ROOT/'models'/'3mf'/'coin_pair_4color_AMS.3mf',[('coin_front',models['c
 write3mf(ROOT/'models'/'3mf'/'mascot_and_stand_6color.3mf',[('mascot_relief',models['mascot_relief'],(60,25,0)),('mascot_stand',models['mascot_stand'],(60,112,0))])
 write3mf(ROOT/'models/3mf'/'coin_alignment_pins.3mf',[('coin_alignment_pins',{'navy':pins},(65,65,0))],four=True)
 report['coin_alignment']={'pin_diameters_mm':[4,4],'socket_centers_y_mm':[12,-8],'pin_height_mm':pin_height,'socket_depth_mm':socket_depth,'radial_clearance_mm':radial_clearance,'socket_entry_chamfer_mm':.25,'pin_tip_chamfer_mm':.22,'pins_watertight':bool(pins.is_watertight)}
-report['fridge_magnet']={'nominal_magnet_mm':[6,2],'pocket_diameter_mm':6.3,'pocket_depth_mm':magnet_depth,'body_thickness_mm':magnet_base+FACE}
+report['fridge_magnet']={'nominal_magnet_mm':[6,2],'pocket_diameter_mm':6.3,'pocket_depth_mm':magnet_depth,'body_thickness_mm':BASE+FACE}
 (ROOT/'validation'/'geometry_validation.json').write_text(json.dumps(report,indent=2))
 fig,axs=plt.subplots(1,4,figsize=(18,5),facecolor='#F4F1E9')
 for ax,reg,title in zip(axs,[front,back,masreg],['60 mm coin • front','60 mm coin • reverse','62 mm mascot relief + mounting tab']):draw(ax,reg,title)

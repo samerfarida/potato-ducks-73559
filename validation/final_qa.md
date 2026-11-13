@@ -6,4 +6,4 @@
 - Both projects use 0.20 mm layers and an 80 mm/s top-surface setting. The bundled files are projects, not presliced G-code.
 - Physical fit, finish, and AMS spool matching have not been tested. Print and dry-fit one set before batching.
 
-- Fridge variants: one Ø6.30 × 2.05 mm pocket per face, 3.60 mm overall thickness, and both faces sliced with all four filaments. Magnet fit and holding strength have not been physically tested.
+- Dual-use coin halves: one Ø6.30 × 2.05 mm pocket per face, 3.60 mm overall thickness, and both faces sliced with all four filaments. Magnet fit and holding strength have not been physically tested.
