@@ -4,6 +4,10 @@
 
 A 60 mm team coin that doubles as two fridge magnets and a freestanding display mascot, designed for multicolor 3D printing. The coin has a flexing Potato Duck on the front and a webbed footprint beneath **FIRST LEGO LEAGUE** on the back, with **TEAM** stacked above **#73559**. Both faces use the same bold lettering size. The display stand is engraved with **#73559** and filled with yellow.
 
+## Download a versioned print pack
+
+Open [GitHub Releases](../../releases) for a ZIP containing the coin and mascot projects, model exports, and assembly instructions from that version. Changes to the main branch go through pull requests. After a merge, GitHub Actions checks the package and publishes a new versioned ZIP.
+
 ## Which file should I open?
 
 | To print | Open in Bambu Studio | What's included |
