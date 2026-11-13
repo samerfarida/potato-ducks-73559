@@ -1,9 +1,9 @@
 """Editable, millimetre-scale Potato Ducks printable relief models.
-Run: python build_models.py. Output goes to the parent folder of this script.
+Run: python build_models.py. Output goes to the repository layout, or to the directory set in POTATO_DUCKS_OUTPUT.
 Dependencies: see requirements.txt beside this script.
 """
 from pathlib import Path
-import json, math, zipfile, struct
+import json, math, os, zipfile, struct
 import numpy as np
 import trimesh
 from shapely.geometry import Point, Polygon, LineString, box
@@ -18,7 +18,9 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import PathPatch
 from matplotlib.path import Path as MPath
 import xml.etree.ElementTree as ET
-ROOT=Path(__file__).resolve().parent.parent
+ROOT=Path(os.environ.get("POTATO_DUCKS_OUTPUT", Path(__file__).resolve().parent.parent))
+for folder in ("models/3mf","models/stl","print/coin","docs","validation","sources"):
+    (ROOT/folder).mkdir(parents=True,exist_ok=True)
 COLORS={'navy':'#172840','gold':'#E9AE35','brown':'#A8652D','yellow':'#FFCE21','orange':'#F47721','black':'#161719'}
 FONT=FontProperties(family='DejaVu Sans',weight='bold')
 COIN_RADIUS=30.0
@@ -179,8 +181,8 @@ for name in ('coin_front','coin_back'):
     print(name,'socket removed volume',before.volume-models[name]['navy'].volume,'expected',socket_outline.area*socket_depth)
 pins=extrude(unary_union([ellipse(0,y,r,r) for y,r in pin_specs]),0,pin_height)
 assert pins.is_watertight and pins.is_winding_consistent and len(pins.split())==2
-(ROOT/'STL'/'coin_alignment').mkdir(parents=True,exist_ok=True)
-pins.export(ROOT/'STL'/'coin_alignment'/'coin_alignment_pins.stl')
+(ROOT/'models'/'stl'/'coin_alignment').mkdir(parents=True,exist_ok=True)
+pins.export(ROOT/'models'/'stl'/'coin_alignment'/'coin_alignment_pins.stl')
 # Stand slot takes the 4.0 mm tab with 0.3 mm clearance in both axes.
 standshape=box(-18,-11,18,11).buffer(3).buffer(-3)
 stand=extrude(standshape,0,8)
@@ -192,7 +194,7 @@ stand=trimesh.boolean.difference([stand,slot,extrude(stand_label,7.2,1.6)],engin
 models['mascot_stand']={'navy':stand}
 report={'units':'mm','coin_diameter':60,'coin_half_thickness':2.4,'assembled_coin_thickness':4.8,'checks':[],'notes':['Not physically test printed.','Mascot is a thick flat-backed relief with a separate stand, not a fully sculpted figurine.','Coin halves use two separate unequal dowels and glue back-to-back.']}
 for name,meshes in models.items():
-    folder=ROOT/'STL'/name;folder.mkdir(parents=True,exist_ok=True)
+    folder=ROOT/'models'/'stl'/name;folder.mkdir(parents=True,exist_ok=True)
     for color,m in meshes.items():
         assert m.is_watertight and m.is_winding_consistent and m.volume>0,(name,color)
         f=folder/(name+'_'+color+'.stl');m.export(f)
@@ -220,19 +222,19 @@ for name,meshes in models.items():
         report[name]={'fused_watertight':bool(union.is_watertight),'connected_components':len(union.split()),'dimensions_mm':union.extents.round(3).tolist()}
     assert union.is_watertight and len(union.split())==1,name
     # Monochrome fallback has all touching regions fused.
-    (ROOT/'STL'/'monochrome').mkdir(exist_ok=True)
-    union.export(ROOT/'STL'/'monochrome'/(name+'_fused.stl'))
-    write3mf(ROOT/(name+'_6color.3mf'),[(name,meshes,(65,65,0))])
-write3mf(ROOT/'coin_pair_6color.3mf',[('coin_front',models['coin_front'],(40,40,0)),('coin_back',models['coin_back'],(106,40,0))])
-write3mf(ROOT/'coin_pair_4color_AMS.3mf',[('coin_front',models['coin_front'],(40,40,0)),('coin_back',models['coin_back'],(106,40,0))],four=True)
-write3mf(ROOT/'mascot_and_stand_6color.3mf',[('mascot_relief',models['mascot_relief'],(60,25,0)),('mascot_stand',models['mascot_stand'],(60,112,0))])
-write3mf(ROOT/'coin_alignment_pins.3mf',[('coin_alignment_pins',{'navy':pins},(65,65,0))],four=True)
+    (ROOT/'models'/'stl'/'monochrome').mkdir(exist_ok=True)
+    union.export(ROOT/'models'/'stl'/'monochrome'/(name+'_fused.stl'))
+    write3mf(ROOT/'models'/'3mf'/(name+'_6color.3mf'),[(name,meshes,(65,65,0))])
+write3mf(ROOT/'models'/'3mf'/'coin_pair_6color.3mf',[('coin_front',models['coin_front'],(40,40,0)),('coin_back',models['coin_back'],(106,40,0))])
+write3mf(ROOT/'models'/'3mf'/'coin_pair_4color_AMS.3mf',[('coin_front',models['coin_front'],(40,40,0)),('coin_back',models['coin_back'],(106,40,0))],four=True)
+write3mf(ROOT/'models'/'3mf'/'mascot_and_stand_6color.3mf',[('mascot_relief',models['mascot_relief'],(60,25,0)),('mascot_stand',models['mascot_stand'],(60,112,0))])
+write3mf(ROOT/'print/coin'/'coin_alignment_pins.3mf',[('coin_alignment_pins',{'navy':pins},(65,65,0))],four=True)
 report['coin_alignment']={'pin_diameters_mm':[4,2.8],'pin_height_mm':pin_height,'socket_depth_mm':socket_depth,'radial_clearance_mm':radial_clearance,'pins_watertight':bool(pins.is_watertight)}
-(ROOT/'geometry_validation.json').write_text(json.dumps(report,indent=2))
+(ROOT/'validation'/'geometry_validation.json').write_text(json.dumps(report,indent=2))
 fig,axs=plt.subplots(1,4,figsize=(18,5),facecolor='#F4F1E9')
 for ax,reg,title in zip(axs,[front,back,masreg],['60 mm coin • front','60 mm coin • reverse','62 mm mascot relief + mounting tab']):draw(ax,reg,title)
 draw(axs[3],{'navy':standshape.difference(slot_outline.union(stand_label))},'Stand • engraved #73559')
-fig.suptitle('POTATO DUCKS  •  TEAM #73559',fontsize=19,color='#172840',weight='bold');fig.tight_layout();fig.savefig(ROOT/'design_preview.png',dpi=180,facecolor=fig.get_facecolor());plt.close(fig)
+fig.suptitle('POTATO DUCKS  •  TEAM #73559',fontsize=19,color='#172840',weight='bold');fig.tight_layout();fig.savefig(ROOT/'docs'/'design_preview.png',dpi=180,facecolor=fig.get_facecolor());plt.close(fig)
 # Editable vector design accompanies parametric source.
 fig,axs=plt.subplots(1,2,figsize=(10,5))
 for ax,reg,title in zip(axs,[front,back],['Front','Reverse']):draw(ax,reg,title)
