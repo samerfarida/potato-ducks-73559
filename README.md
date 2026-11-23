@@ -19,7 +19,7 @@ Open the coin and mascot files **as projects** to keep the Bambu Lab H2C setting
 
 ## Print the magnetic coin
 
-1. Print both faces artwork up. Each face has one centered **Ø6.30 × 2.05 mm** pocket for a **Ø6 × 2 mm** disc magnet.
+1. Print both faces artwork up. Each face has one centered **Ø15.30 × 2.05 mm** pocket for a **Ø15 × 2 mm** disc magnet.
 2. Dry-fit the magnets and mark their orientation so the faces attract back-to-back. Glue one magnet into each pocket with adhesive suitable for PLA and the magnet coating. Keep the magnets flush or just below the surface and let the glue cure fully.
 3. Snap the halves together and rotate them by hand, or pull them apart to use them as fridge magnets. The coin halves themselves stay unglued.
 
@@ -44,7 +44,7 @@ For the color-separated STLs, import all parts for a given model together as one
 
 ## Validation and rebuilding
 
-The configured coin and mascot projects were sliced in Bambu Studio with a 0.4 mm nozzle and 0.20 mm layers. Both use a slower top-surface pass for a smoother finish. Coin lettering, duck, footprint and trim rise 0.40 mm above the navy field (two 0.20 mm layers). If navy still tints the lighter colors, check the navy-to-light flushing volumes in your AMS setup. The coin lettering was also checked against the sliced top-layer toolpaths. The geometry checks and slice results are in [`validation/`](validation/). The centered magnet pocket retains the fit tested on an earlier print. Test one assembled set before printing a batch.
+The configured coin and mascot projects were sliced in Bambu Studio with a 0.4 mm nozzle and 0.20 mm layers. Both use a slower top-surface pass for a smoother finish. Coin lettering, duck, footprint and trim rise 0.40 mm above the navy field (two 0.20 mm layers). If navy still tints the lighter colors, check the navy-to-light flushing volumes in your AMS setup. The coin lettering was also checked against the sliced top-layer toolpaths. The geometry checks and slice results are in [`validation/`](validation/). The centered magnet pocket targets **Ø15 × 2 mm** discs; dry-fit one set before printing a batch.
 
 To regenerate the generic models and artwork from the repo root:
 

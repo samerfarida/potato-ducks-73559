@@ -10,7 +10,7 @@
       "part": "coin_front_navy",
       "watertight": true,
       "winding_consistent": true,
-      "volume_mm3": 9183.938,
+      "volume_mm3": 8870.997,
       "triangles": 8612,
       "bounds_mm": [
         [
@@ -124,7 +124,7 @@
       "part": "coin_back_navy",
       "watertight": true,
       "winding_consistent": true,
-      "volume_mm3": 9516.783,
+      "volume_mm3": 9203.842,
       "triangles": 8142,
       "bounds_mm": [
         [
@@ -377,7 +377,7 @@
     "fused_watertight": true,
     "max_color_overlap_area_mm2": 0.0005040267767369101,
     "uncovered_area_mm2": 0.0,
-    "volume_error_mm3": 0.1698130142467562,
+    "volume_error_mm3": 0.16980395155769656,
     "connected_components": 1,
     "dimensions_mm": [
       60.0,
@@ -389,7 +389,7 @@
     "fused_watertight": true,
     "max_color_overlap_area_mm2": 0.0,
     "uncovered_area_mm2": 0.0,
-    "volume_error_mm3": 0.1691433807463909,
+    "volume_error_mm3": 0.16913431805733126,
     "connected_components": 1,
     "dimensions_mm": [
       60.0,
@@ -420,10 +420,10 @@
   },
   "fridge_magnet": {
     "nominal_magnet_mm": [
-      6,
+      15,
       2
     ],
-    "pocket_diameter_mm": 6.3,
+    "pocket_diameter_mm": 15.3,
     "pocket_depth_mm": 2.05,
     "body_thickness_mm": 3.5999999999999996
   }
