@@ -201,9 +201,9 @@ tab=box(-5,0,5,8)
 sil=unary_union([sil,tab]);masreg=regions(raw,sil)
 raise_art=.4
 models={'coin_front':make_meshes(front,clip,raise_art=raise_art),'coin_back':make_meshes(back,clip,raise_art=raise_art),'mascot_relief':make_meshes(masreg,sil,base=3.2,face=.8)}
-# Each coin half doubles as a fridge magnet.
+# Each coin half doubles as a fridge magnet (Ø15 × 2 mm disc, +0.3 mm diam clearance).
 magnet_depth=2.05
-magnet_profile=ellipse(0,0,3.15,3.15)
+magnet_profile=ellipse(0,0,7.65,7.65)
 magnet_tool=extrude(magnet_profile,-.2,magnet_depth+.2)
 assert BASE-magnet_depth>=.7
 for name in ('coin_front','coin_back'):
@@ -255,7 +255,7 @@ for name,meshes in models.items():
     write3mf(ROOT/'models'/'3mf'/(name+'_4color.3mf'),[(name,meshes,(65,65,0))],four=True)
 write3mf(ROOT/'models'/'3mf'/'coin_pair_4color_AMS.3mf',[('coin_front',models['coin_front'],(40,40,0)),('coin_back',models['coin_back'],(106,40,0))],four=True)
 write3mf(ROOT/'models'/'3mf'/'mascot_and_stand_4color.3mf',[('mascot_relief',models['mascot_relief'],(60,25,0)),('mascot_stand',models['mascot_stand'],(60,112,0))],four=True)
-report['fridge_magnet']={'nominal_magnet_mm':[6,2],'pocket_diameter_mm':6.3,'pocket_depth_mm':magnet_depth,'body_thickness_mm':BASE+FACE}
+report['fridge_magnet']={'nominal_magnet_mm':[15,2],'pocket_diameter_mm':15.3,'pocket_depth_mm':magnet_depth,'body_thickness_mm':BASE+FACE}
 (ROOT/'validation'/'geometry_validation.json').write_text(json.dumps(report,indent=2))
 fig,axs=plt.subplots(1,4,figsize=(18,5),facecolor='#F4F1E9')
 for ax,reg,title in zip(axs,[front,back,masreg],['60 mm coin • front','60 mm coin • reverse','62 mm mascot relief + mounting tab']):draw(ax,reg,title)
